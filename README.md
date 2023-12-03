@@ -18,10 +18,20 @@ ILinkRcv.hpp: Functions that actually receive messages from iLink and call the i
 
 iLinkSnd: Code to create iLink messages
 
-socke_help.hpp: Code to handle the CME socket
+socket_help.hpp: Code to handle the CME socket
 
 audit.hpp: Audit trail stuff
 
 ilink_null.hpp: Definitions of NULL values
 
 sign.hpp: for signing iLink messages
+
+Copyright 2022/2023 Vincent Maciejewski, Quant Enterprises & M2 Tech
+Contact:
+v@m2te.ch
+mayeski@gmail.com
+https://www.linkedin.com/in/vmayeski/
+http://m2te.ch/
+
+A bit more information on the handler is found on my blog:
+http://maye.ski/
