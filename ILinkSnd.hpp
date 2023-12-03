@@ -121,7 +121,8 @@ namespace m2::ilink
           PartyDetailsListReqID(_PartyDetailsListReqID),
           KeepAliveInterval(_KeepAliveInterval)
     {
-      UUID = chutil::Time::epoch() / 1000;
+      // Initialize UUID to time since epoch in milliseconds
+      UUID = 0;
     }
 
   private:
@@ -149,6 +150,7 @@ namespace m2::ilink
      * @brief genrate ts in nanoseconds
      *
      */
+    // change this to static?
     uint64_t generate_time_stamp_nanoseconds() const noexcept
     {
       struct timespec ts;
@@ -214,6 +216,7 @@ namespace m2::ilink
       }
       else
       {
+        // Set UUID to time since epoch in milliseconds
         UUID = chutil::Time::epoch() / 1000;
       }
       NextSeqNo = _next_seq_no;
@@ -443,7 +446,7 @@ namespace m2::ilink
       //
       // setting execution mode to NULL_VALUE causes a reject
       // so we set it to 0 instead
-      // this should generate an exception in << below unless
+      // this should generate an exception in below unless
       // modifications are made to generated sbe code in ExcecMode.h
       union
       {
@@ -466,7 +469,7 @@ namespace m2::ilink
 
       std::vector<std::any> vals;
       vals.resize(size_t(m2::ilink::Audit::END));
-      vals[size_t(m2::ilink::Audit::SendingTimestamps)] = chutil::Time::from_epoch(msg.sendingTimeEpoch());
+      vals[size_t(m2::ilink::Audit::SendingTimestamps)] = // set to something printable
       vals[size_t(m2::ilink::Audit::MessageDirection)] = m2::ilink::TO_CME;
       vals[size_t(m2::ilink::Audit::OperatorID)] = FirmID;
       vals[size_t(m2::ilink::Audit::SessionID)] = SessionID;
@@ -591,7 +594,7 @@ namespace m2::ilink
 
       std::vector<std::any> vals;
       vals.resize(size_t(m2::ilink::Audit::END));
-      vals[size_t(m2::ilink::Audit::SendingTimestamps)] = chutil::Time::from_epoch(msg.sendingTimeEpoch());
+      vals[size_t(m2::ilink::Audit::SendingTimestamps)] = // set to something printable
       vals[size_t(m2::ilink::Audit::MessageDirection)] = m2::ilink::TO_CME;
       vals[size_t(m2::ilink::Audit::OperatorID)] = FirmID;
       vals[size_t(m2::ilink::Audit::SessionID)] = SessionID;
@@ -662,7 +665,7 @@ namespace m2::ilink
 
       std::vector<std::any> vals;
       vals.resize(size_t(m2::ilink::Audit::END));
-      vals[size_t(m2::ilink::Audit::SendingTimestamps)] = chutil::Time::from_epoch(msg.sendingTimeEpoch());
+      vals[size_t(m2::ilink::Audit::SendingTimestamps)] = // set to something printable
       vals[size_t(m2::ilink::Audit::MessageDirection)] = m2::ilink::TO_CME;
       vals[size_t(m2::ilink::Audit::OperatorID)] = FirmID;
       vals[size_t(m2::ilink::Audit::SessionID)] = SessionID;
@@ -736,7 +739,7 @@ namespace m2::ilink
 
       std::vector<std::any> vals;
       vals.resize(size_t(m2::ilink::Audit::END));
-      vals[size_t(m2::ilink::Audit::SendingTimestamps)] = chutil::Time::from_epoch(msg.sendingTimeEpoch());
+      vals[size_t(m2::ilink::Audit::SendingTimestamps)] = // set tosomething printable
       vals[size_t(m2::ilink::Audit::MessageDirection)] = m2::ilink::TO_CME;
       vals[size_t(m2::ilink::Audit::OperatorID)] = FirmID;
       vals[size_t(m2::ilink::Audit::SessionID)] = SessionID;
