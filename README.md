@@ -12,10 +12,16 @@ and the iLink message schema provided by the CME.
 
 What is in the files:
 
-ILinkCBIF.hpp: The interface you will need to implement to receive messages from iLink <\n>
+ILinkCBIF.hpp: The interface you will need to implement to receive messages from iLink
+
 ILinkRcv.hpp: Functions that actually receive messages from iLink and call the interface
+
 iLinkSnd: Code to create iLink messages
+
 socke_help.hpp: Code to handle the CME socket
+
 audit.hpp: Audit trail stuff
+
 ilink_null.hpp: Definitions of NULL values
+
 sign.hpp: for signing iLink messages
