@@ -377,8 +377,8 @@ namespace m2::ilink
       auto &p = msg.price();
 
       //
-      // test this carefully for any rounding issues
-      // perhaps should be using long double instead of double
+      // test this carefully for each contract for any rounding issues
+      // perhaps should be using long double for price instead of double
       //
       auto price9 = int64_t(round(price * 1e8) * 10);
       log_inf("setting price9: %ld", price9);
@@ -401,6 +401,8 @@ namespace m2::ilink
 
       if (ord_type == sbe::OrderTypeReq::Value::StopLimit || ord_type == sbe::OrderTypeReq::Value::StopwithProtection)
       {
+        // NOT TESTED
+        abort();
         char price_buffer[32];
         memset(price_buffer, 0, sizeof price_buffer);
         sbe::PRICENULL9 price9(price_buffer, sizeof price_buffer);
@@ -409,6 +411,8 @@ namespace m2::ilink
       }
       else
       {
+        // NOT TESTED
+        abort();
         auto &p = msg.stopPx();
         p.mantissa(sbe::PRICENULL9::mantissaNullValue());
       }
