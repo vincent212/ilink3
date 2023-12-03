@@ -75,7 +75,6 @@ namespace m2::ilink::sockhelp
         if (setsockopt(sock, IPPROTO_TCP, TCP_NODELAY, &flag, sizeof(int)) == -1)
         {
             std::cerr << "Could not set TCP_NODELAY\n";
-            close(sock);
             abort();
         }
         return sock;

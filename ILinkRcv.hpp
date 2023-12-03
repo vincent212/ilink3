@@ -69,20 +69,12 @@ https://opensource.org/licenses/MIT
 #include "ilink_v8/PartyDetailsListReport538.h"
 #include "ilink_v8/Sequence506.h"
 
-#include "polonaise/logger/act/Logger.hpp"
-
 #include "ILinkCBIF.hpp"
-
 #include "sock_help.hpp"
 
 namespace m2::ilink::receiver
 {
 
-    // get name for logger
-    static std::string get_name() noexcept
-    {
-        return "ILinkRcv";
-    }
 
     /**
      * @brief process message from msgw if available
@@ -102,8 +94,6 @@ namespace m2::ilink::receiver
             std::cerr << "Received message: " << header->TemplateID << std::endl;
         }
 
-        log_inf("Received message: %d", int(header->TemplateID));
-
         switch (header->TemplateID)
         {
 
@@ -120,10 +110,6 @@ namespace m2::ilink::receiver
                 std::cerr << "msg: " << msg << std::endl;
             }
 
-            std::stringstream ss;
-            ss << msg;
-            log_inf("msg: %s", ss.str());
-
             auto NextSeqNo = msg.nextSeqNo();
             auto FaultToleranceIndicator = msg.faultToleranceIndicator();
             auto KeepAliveIntervalLapsed = msg.keepAliveIntervalLapsed();
@@ -139,10 +125,6 @@ namespace m2::ilink::receiver
             {
                 std::cerr << "msg: " << msg << std::endl;
             }
-
-            std::stringstream ss;
-            ss << msg;
-            log_inf("msg: %s", ss.str());
             
             auto RequestTimeStamp = msg.requestTimestamp();
             auto UUID = msg.uUID();
@@ -162,10 +144,6 @@ namespace m2::ilink::receiver
                 std::cerr << "msg: " << msg << std::endl;
             }
 
-            std::stringstream ss;
-            ss << msg;
-            log_inf("msg: %s", ss.str());
-
             auto Reason = msg.getReasonAsString();
             auto RequestTimeStamp = msg.requestTimestamp();
             auto UUID = msg.uUID();
@@ -183,10 +161,6 @@ namespace m2::ilink::receiver
             {
                 std::cerr << "msg: " << msg << std::endl;
             }
-
-            std::stringstream ss;
-            ss << msg;
-            log_inf("msg: %s", ss.str());
 
             auto RequestTimeStamp = msg.requestTimestamp();
             auto UUID = msg.uUID();
@@ -207,10 +181,6 @@ namespace m2::ilink::receiver
             {
                 std::cerr << "msg: " << msg << std::endl;
             }
-
-            std::stringstream ss;
-            ss << msg;
-            log_inf("msg: %s", ss.str());
 
             auto Reason = msg.getReasonAsString();
             auto UUID = msg.uUID();
@@ -237,10 +207,6 @@ namespace m2::ilink::receiver
                 std::cerr << "msg: " << msg << std::endl;
             }
 
-            std::stringstream ss;
-            ss << msg;
-            log_inf("msg: %s", ss.str());
-
             auto UUID = msg.uUID();
             auto FromSeqNo = msg.fromSeqNo();
             auto MsgCount = msg.msgCount();
@@ -256,10 +222,6 @@ namespace m2::ilink::receiver
             {
                 std::cerr << "msg: " << msg << std::endl;
             }
-
-            std::stringstream ss;
-            ss << msg;
-            log_inf("msg: %s", ss.str());
 
             auto UUID = msg.uUID();
             auto LastUUID = msg.lastUUID();
@@ -278,10 +240,6 @@ namespace m2::ilink::receiver
             {
                 std::cerr << "msg: " << msg << std::endl;
             }
-
-            std::stringstream ss;
-            ss << msg;
-            log_inf("msg: %s", ss.str());
 
             auto Reason = msg.getReasonAsString();
             auto UUID = msg.uUID();
@@ -304,10 +262,6 @@ namespace m2::ilink::receiver
             {
                 std::cerr << "msg: " << msg << std::endl;
             }
-
-            std::stringstream ss;
-            ss << msg;
-            log_inf("msg: %s", ss.str());
 
             auto UUID = msg.uUID();
             auto SeqNum = msg.seqNum();
@@ -332,11 +286,6 @@ namespace m2::ilink::receiver
             {
                 std::cerr << "msg: " << msg << std::endl;
             }
-
-
-            std::stringstream ss;
-            ss << msg;
-            log_inf("msg: %s", ss.str());
 
             param.templateId = sbe::ExecutionReportNew522::sbeTemplateId();
             param.UUID = msg.uUID();
@@ -377,10 +326,6 @@ namespace m2::ilink::receiver
             {
                 std::cerr << "msg: " << msg << std::endl;
             }
-
-            std::stringstream ss;
-            ss << msg;
-            log_inf("msg: %s", ss.str());
 
             param.templateId = sbe::ExecutionReportModify531::sbeTemplateId();
             param.UUID = msg.uUID();
@@ -424,10 +369,6 @@ namespace m2::ilink::receiver
                 std::cerr << "msg: " << msg << std::endl;
             }
 
-            std::stringstream ss;
-            ss << msg;
-            log_inf("msg: %s", ss.str());
-
             param.templateId = sbe::ExecutionReportCancel534::sbeTemplateId();
             param.UUID = msg.uUID();
             param.SeqNum = msg.seqNum();
@@ -469,10 +410,6 @@ namespace m2::ilink::receiver
                 std::cerr << "msg: " << msg << std::endl;
             }
 
-            std::stringstream ss;
-            ss << msg;
-            log_inf("msg: %s", ss.str());
-
             param.templateId = sbe::ExecutionReportStatus532::sbeTemplateId();
             param.UUID = msg.uUID();
             param.SeqNum = msg.seqNum();
@@ -513,10 +450,6 @@ namespace m2::ilink::receiver
             {
                 std::cerr << "msg: " << msg << std::endl;
             }
-
-            std::stringstream ss;
-            ss << msg;
-            log_inf("msg: %s", ss.str());
 
             param.templateId = sbe::ExecutionReportTradeOutright525::sbeTemplateId();
             param.UUID = msg.uUID();
@@ -562,10 +495,6 @@ namespace m2::ilink::receiver
             {
                 std::cerr << "msg: " << msg << std::endl;
             }
-
-            std::stringstream ss;
-            ss << msg;
-            log_inf("msg: %s", ss.str());
 
             param.templateId = sbe::ExecutionReportTradeSpread526::sbeTemplateId();
             param.UUID = msg.uUID();
@@ -616,10 +545,6 @@ namespace m2::ilink::receiver
                 std::cerr << "msg: " << msg << std::endl;
             }
 
-            std::stringstream ss;
-            ss << msg;
-            log_inf("msg: %s", ss.str());
-
             param.templateId = sbe::ExecutionReportElimination524::sbeTemplateId();
             param.UUID = msg.uUID();
             param.SeqNum = msg.seqNum();
@@ -664,10 +589,6 @@ namespace m2::ilink::receiver
                 std::cerr << "msg: " << msg << std::endl;
             }
 
-            std::stringstream ss;
-            ss << msg;
-            log_inf("msg: %s", ss.str());
-
             param.templateId = sbe::ExecutionReportReject523::sbeTemplateId();
             param.UUID = msg.uUID();
             param.SeqNum = msg.seqNum();
@@ -708,10 +629,6 @@ namespace m2::ilink::receiver
                 std::cerr << "msg: " << msg << std::endl;
             }
 
-            std::stringstream ss;
-            ss << msg;
-            log_inf("msg: %s", ss.str());
-
             param.templateId = sbe::ExecutionReportTradeAddendumOutright548::sbeTemplateId();
             param.UUID = msg.uUID();
             param.SeqNum = msg.seqNum();
@@ -745,10 +662,6 @@ namespace m2::ilink::receiver
             {
                 std::cerr << "msg: " << msg << std::endl;
             }
-
-            std::stringstream ss;
-            ss << msg;
-            log_inf("msg: %s", ss.str());
 
             param.templateId = sbe::ExecutionReportTradeAddendumSpread549::sbeTemplateId();
             param.UUID = msg.uUID();
@@ -784,10 +697,6 @@ namespace m2::ilink::receiver
                 std::cerr << "msg: " << msg << std::endl;
             }
 
-            std::stringstream ss;
-            ss << msg;
-            log_inf("msg: %s", ss.str());
-
             param.templateId = sbe::OrderCancelReject535::sbeTemplateId();
             param.UUID = msg.uUID();
             param.SeqNum = msg.seqNum();
@@ -819,10 +728,6 @@ namespace m2::ilink::receiver
                 std::cerr << "msg: " << msg << std::endl;
             }
 
-            std::stringstream ss;
-            ss << msg;
-            log_inf("msg: %s", ss.str());
-
             param.templateId = sbe::OrderCancelReplaceReject536::sbeTemplateId();
             param.UUID = msg.uUID();
             param.SeqNum = msg.seqNum();
@@ -851,10 +756,6 @@ namespace m2::ilink::receiver
                 std::cerr << "msg: " << msg << std::endl;
             }
 
-            std::stringstream ss;
-            ss << msg;
-            log_inf("msg: %s", ss.str());
-
             auto UUID = msg.uUID();
             auto err = msg.errorCodes();
             auto reason = msg.getReasonAsString();
@@ -870,10 +771,6 @@ namespace m2::ilink::receiver
             {
                 std::cerr << "msg: " << msg << std::endl;
             }
-
-            std::stringstream ss;
-            ss << msg;
-            log_inf("msg: %s", ss.str());
 
             auto SeqNum = msg.seqNum();
             auto UUID = msg.uUID();
@@ -907,10 +804,6 @@ namespace m2::ilink::receiver
                 std::cerr << "msg: " << msg << std::endl;
             }
 
-            std::stringstream ss;
-            ss << msg;
-            log_inf("msg: %s", ss.str());
-
             auto SeqNum = msg.seqNum();
             auto UUID = msg.uUID();
             auto PartyDetailsListReqID = msg.partyDetailsListReqID();
@@ -932,7 +825,6 @@ namespace m2::ilink::receiver
         default:
         {
             std::cerr << "*** Unknown template id: " << header->TemplateID << std::endl;
-            log_err("Unknown template id: ", header->TemplateID);
         }
 
         }

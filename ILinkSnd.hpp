@@ -71,9 +71,7 @@ https://opensource.org/licenses/MIT
 #include "ilink_v8/ExecInst.h"
 
 #include "sign.hpp"
-#include "polonaise/logger/act/Logger.hpp"
 #include "ilink/audit.hpp"
-
 #include "ilink/ilink_null.hpp"
 
 /***************************************************************
@@ -122,11 +120,10 @@ namespace m2::ilink
           KeepAliveInterval(_KeepAliveInterval)
     {
       // Initialize UUID to time since epoch in milliseconds
-      UUID = 0;
+      UUID = generate_time_stamp_milliseconds();
     }
 
   private:
-    std::string get_name() const { return "ILinkSnd"; }
 
     const bool debug = false;
     std::string Account;
@@ -150,12 +147,24 @@ namespace m2::ilink
      * @brief genrate ts in nanoseconds
      *
      */
-    // change this to static?
-    uint64_t generate_time_stamp_nanoseconds() const noexcept
+    static
+    uint64_t generate_time_stamp_nanoseconds()
     {
       struct timespec ts;
       clock_gettime(CLOCK_REALTIME, &ts);
       return ts.tv_sec * 1000000000 + ts.tv_nsec;
+    }
+
+    /**
+     * @brief generate ts in ms
+     *
+     */
+    static 
+    uint64_t generate_time_stamp_milliseconds()
+    {
+      struct timespec ts;
+      clock_gettime(CLOCK_REALTIME, &ts);
+      return ts.tv_sec * 1000 + ts.tv_nsec / 1000000;
     }
 
     uint16_t generate_days_since_epoch() const noexcept
@@ -217,7 +226,7 @@ namespace m2::ilink
       else
       {
         // Set UUID to time since epoch in milliseconds
-        UUID = chutil::Time::epoch() / 1000;
+        UUID = generate_time_stamp_milliseconds();
       }
       NextSeqNo = _next_seq_no;
     }
@@ -229,7 +238,6 @@ namespace m2::ilink
      */
     void send_nogotiate_message(int sock) const noexcept
     {
-      log_inf("sending negotiate message %d", sock);
       auto RequestTimeStamp = generate_time_stamp_nanoseconds();
       char buffer[1024];
       memset(buffer, 0, sizeof buffer);
@@ -247,9 +255,7 @@ namespace m2::ilink
       {
         std::cerr << "sending: " << msg << std::endl;
       }
-      std::stringstream ss;
-      ss << msg;
-      log_inf("msg: %s", ss.str());
+
       sockhelp::send_message(sock, buffer, msg.encodedLength(), true);
     }
 
@@ -260,7 +266,6 @@ namespace m2::ilink
      */
     void send_establish_message(int sock) noexcept
     {
-      log_inf("sending establish message %d", sock);
       auto RequestTimeStamp = generate_time_stamp_nanoseconds();
       char buffer[1024];
       memset(buffer, 0, sizeof buffer);
@@ -283,9 +288,7 @@ namespace m2::ilink
       {
         std::cerr << "sending: " << msg << std::endl;
       }
-      std::stringstream ss;
-      ss << msg;
-      log_inf("msg: %s", ss.str());
+
       sockhelp::send_message(sock, buffer, msg.encodedLength(), true);
     }
 
@@ -296,7 +299,6 @@ namespace m2::ilink
      */
     void send_sequence(int sock, bool lapsed = false) const noexcept
     {
-      log_inf("sending sequence message %d", sock);
       char buffer[1024];
       memset(buffer, 0, sizeof buffer);
       sbe::Sequence506 sequence;
@@ -312,9 +314,7 @@ namespace m2::ilink
       {
         std::cerr << "sending: " << msg << std::endl;
       }
-      std::stringstream ss;
-      ss << msg;
-      log_inf("msg: %s", ss.str());
+
       sockhelp::send_message(sock, buffer, msg.encodedLength());
     }
 
@@ -324,7 +324,6 @@ namespace m2::ilink
      */
     void send_terminate(int sock, uint16_t errorCodes = 0) const noexcept
     {
-      log_inf("sending terminate message %d", sock);
       auto RequestTimeStamp = generate_time_stamp_nanoseconds();
       char buffer[1024];
       memset(buffer, 0, sizeof buffer);
@@ -337,9 +336,7 @@ namespace m2::ilink
       {
         std::cerr << "sending: " << msg << std::endl;
       }
-      std::stringstream ss;
-      ss << msg;
-      log_inf("msg: %s", ss.str());
+
       sockhelp::send_message(sock, buffer, msg.encodedLength());
     }
 
@@ -360,18 +357,7 @@ namespace m2::ilink
         sbe::OrderTypeReq::Value ord_type,
         sbe::TimeInForce::Value time_in_force) noexcept
     {
-      log_inf("sending new order single message sock: %d, qty: %d, securityid: %d, side: %d, cloid: %s, price: %f, stoppx: %f, min_qty: %d, display_qty: %d, ord_type: %d, time_in_force: %d",
-              sock,
-              qty,
-              securityID,
-              int(side),
-              cloid,
-              price,
-              stop_px,
-              min_qty,
-              display_qty,
-              int(ord_type),
-              int(time_in_force));
+
       auto RequestTimeStamp = generate_time_stamp_nanoseconds();
       char buffer[1024];
       memset(buffer, 0, sizeof buffer);
@@ -384,7 +370,6 @@ namespace m2::ilink
       // perhaps should be using long double for price instead of double
       //
       auto price9 = int64_t(round(price * 1e8) * 10);
-      log_inf("setting price9: %ld", price9);
       p.mantissa(price9);
 
       msg.orderQty(qty);
@@ -461,10 +446,6 @@ namespace m2::ilink
         std::cerr << "sending: " << msg << std::endl;
       }
 
-      std::stringstream ss;
-      ss << msg;
-      log_inf("msg: %s", ss.str());
-
       sockhelp::send_message(sock, buffer, msg.encodedLength());
 
       std::vector<std::any> vals;
@@ -514,7 +495,6 @@ namespace m2::ilink
         sbe::OrderTypeReq::Value ord_type,
         sbe::TimeInForce::Value time_in_force) noexcept
     {
-      log_inf("sending cancel replace message %d", sock);
       auto RequestTimeStamp = generate_time_stamp_nanoseconds();
       char buffer[1024];
       memset(buffer, 0, sizeof buffer);
@@ -586,10 +566,6 @@ namespace m2::ilink
         std::cerr << "sending: " << msg << std::endl;
       }
 
-      std::stringstream ss;
-      ss << msg;
-      log_inf("msg: %s", ss.str());
-
       sockhelp::send_message(sock, buffer, msg.encodedLength());
 
       std::vector<std::any> vals;
@@ -632,7 +608,6 @@ namespace m2::ilink
         int32_t securityID,
         sbe::SideReq::Value side) noexcept
     {
-      log_inf("sending cancel message %d", sock);
       auto RequestTimeStamp = generate_time_stamp_nanoseconds();
 
       char buffer[1024];
@@ -695,7 +670,6 @@ namespace m2::ilink
         sbe::ListUpdAct::Value list_update_action,
         const std::string &party_detail_id) noexcept
     {
-      log_inf("sending party details definition message %d", sock);
       auto RequestTimeStamp = generate_time_stamp_nanoseconds();
       char buffer[1024];
       memset(buffer, 0, sizeof buffer);
@@ -731,10 +705,6 @@ namespace m2::ilink
         std::cerr << "len:" << msg.encodedLength() << " sending " << msg << std::endl;
       }
 
-      std::stringstream ss;
-      ss << msg;
-      log_inf("msg: %s", ss.str());
-
       sockhelp::send_message(sock, buffer, msg.encodedLength());
 
       std::vector<std::any> vals;
@@ -769,7 +739,6 @@ namespace m2::ilink
         uint32_t from_seq_no,
         uint16_t msg_count) noexcept
     {
-      log_inf("sending retransmission request message %d", sock);
       auto RequestTimeStamp = generate_time_stamp_nanoseconds();
       char buffer[1024];
       memset(buffer, 0, sizeof buffer);
@@ -785,10 +754,6 @@ namespace m2::ilink
         std::cerr << "sending: " << msg << std::endl;
       }
 
-      std::stringstream ss;
-      ss << msg;
-      log_inf("msg: %s", ss.str());
-
       sockhelp::send_message(sock, buffer, msg.encodedLength());
     }
 
@@ -801,7 +766,6 @@ namespace m2::ilink
         uint64_t reqid,
         const std::string &partyId)
     {
-      log_inf("sending party details list request message %d", sock);
       auto RequestTimeStamp = generate_time_stamp_nanoseconds();
       char buffer[1024];
       memset(buffer, 0, sizeof buffer);
@@ -819,10 +783,6 @@ namespace m2::ilink
       {
         std::cerr << "len:" << msg.encodedLength() << " sending " << msg << std::endl;
       }
-
-      std::stringstream ss;
-      ss << msg;
-      log_inf("msg: %s", ss.str());
 
       sockhelp::send_message(sock, buffer, msg.encodedLength());
     }
