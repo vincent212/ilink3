@@ -1,4 +1,4 @@
-# ilink3
+# CME ilink3 protocol Coder/Decoder
 CME order managment iLink3 codec
 
 This repo contain a codec for the CME iLink3 protocol. It is everything you will need to 
